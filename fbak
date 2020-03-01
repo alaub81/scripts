@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#########################################################################
+#Name: fbak
+#Subscription:
+#Die folgende Funktion erstellt eine Kopie einer Datei mit aktuellem
+#Zeitstempel und dem Kuerzel des jeweiligen Mitarbeiters. Genutzt
+#werden kann die Funktion wie ein normales Bash-Skript.
+#Usage: fbak <dateiname> <kuerzel>
+#by A. Laub
+#andreas[-at-]laub-home.de
+#
+#License:
+#This program is free software: you can redistribute it and/or modify it
+#under the terms of the GNU General Public License as published by the
+#Free Software Foundation, either version 3 of the License, or (at your option)
+#any later version.
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#or FITNESS FOR A PARTICULAR PURPOSE.
+#########################################################################
+#Set the language
+export LANG="en_US.UTF-8"
+#Load the Pathes
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+#do the stuff
+if [ "$2" = "" ]; then
+        echo 'Bitte gib ein Kuerzel an!'
+        echo 'Usage: fbak <datei> <Kuerzel>'
+else
+        if [ -f $1.$(date +%Y-%m-%d.$2) ]; then
+                COUNTER=1
+                while [ -f $1.$(date +%Y-%m-%d.$2.$COUNTER) ]; do
+                        COUNTER=$[$COUNTER+1]
+                done
+                cp -p $1 $1.$(date +%Y-%m-%d.$2.$COUNTER)
+        else
+                cp -p $1 $1.$(date +%Y-%m-%d.$2)
+        fi
+fi
+
