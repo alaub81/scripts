@@ -38,13 +38,13 @@ TIMESTAMP=$(date +"%Y%m%d%H%M")
 ALLCONTAINER=$(docker ps --format '{{.Names}}')
 ALLPROJECTS=$(for i in $ALLCONTAINER; do docker inspect --format '{{ index .Config.Labels "com.docker.compose.project.working_dir"}}' $i; done | sort -u)
 # then to use all projects without filtering it:
-#COMPOSE=$ALLPROJECTS
+COMPOSE=$ALLPROJECTS
 # you can filter all Compose Projects with grep (include only) or grep -v (exclude) or a combination
 # to do a filter for 2 or more arguments separate them with "\|"
 # example: $(echo $ALLPROJECTS |grep 'project1\|project2' | grep -v 'database')
 # to use volumes with name project1 and project2 but not database
 #COMPOSE=$(echo -e "$ALLPROJECTS" | grep 'project1\|project2' | grep -v 'database')
-COMPOSE=$(echo -e "$ALLPROJECTS" | grep -v 'mailcow-dockerized')
+#COMPOSE=$(echo -e "$ALLPROJECTS" | grep -v 'mailcow-dockerized')
 
 
 ### Do the stuff
