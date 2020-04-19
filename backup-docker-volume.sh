@@ -40,12 +40,9 @@ VOLUME=$(docker volume ls -q)
 # to use volumes with name project1 and project2 but not database
 #VOLUME=$(docker volume ls -q |grep 'project1\|project2' | grep -v 'database')
 #VOLUME=$(docker volume ls -q | grep -v 'mailcowdockerized\|_db')
-<<<<<<< HEAD
 
 # if you want to use memory limitation. Must be supported by the kernel.
 #MEMORYLIMIT="-m 35m"
-=======
->>>>>>> 71969b6cf5c649dd26110c04792042ce93b623d1
 
 ### Do the stuff
 echo -e "Start $TIMESTAMP Backup for Volumes:\n"
