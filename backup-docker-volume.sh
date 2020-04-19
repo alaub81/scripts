@@ -33,13 +33,16 @@ TIMESTAMP=$(date +"%Y%m%d%H%M")
 # Volumenames separated by space 
 #VOLUME="project1_data_container1 project2_data_container1"
 # you can use "$(docker volume ls  -q)" for all volumes
-#VOLUME=$(docker volume ls -q)
+VOLUME=$(docker volume ls -q)
 # you can filter all Volumes with grep (include only) or grep -v (exclude) or a combination
 # to do a filter for 2 or more arguments separate them with "\|"
 # example: $(docker volume ls -q |grep 'project1\|project2' | grep -v 'database')
 # to use volumes with name project1 and project2 but not database
 #VOLUME=$(docker volume ls -q |grep 'project1\|project2' | grep -v 'database')
-VOLUME=$(docker volume ls -q | grep -v 'mailcowdockerized\|_db')
+#VOLUME=$(docker volume ls -q | grep -v 'mailcowdockerized\|_db')
+
+# if you want to use memory limitation. Must be supported by the kernel.
+#MEMORYLIMIT="-m 35m"
 
 ### Do the stuff
 echo -e "Start $TIMESTAMP Backup for Volumes:\n"
@@ -53,8 +56,7 @@ for i in $VOLUME; do
         -v $BACKUPDIR:/backup \
         -v $i:/data:ro \
 	-e TIMESTAMP=$TIMESTAMP \
-	-e i=$i \
-	-m 35m \
+	-e i=$i	${MEMORYLIMIT} \
 	--name volumebackup \
         alpine sh -c "cd /data && /bin/tar -czf /backup/$i-$TIMESTAMP.tar.gz ."
         #debian:stretch-slim bash -c "cd /data && /bin/tar -czf /backup/$i-$TIMESTAMP.tar.gz ."
