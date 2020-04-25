@@ -30,7 +30,7 @@ DIFFBACKUPFILE="backup-$(date +"%F-%H%M")-DIFF.tar.gz"
 #What you want to backup
 FILESTOSAVE="/root/ /etc/ /usr/local/sbin/ /srv/ /var/ /home/ /boot/ /media/"
 #Files you want to exclude from the backup (uncomment to use)
-EXCLUDEFILES="--exclude=/var/lib/docker/* --exclude=/var/cache/apt/* --exclude=/var/swap"
+EXCLUDEFILES="--exclude=/var/lib/docker/* --exclude=/var/cache/apt/* --exclude=/var/swap --exclude=/var/spool/postfix/*"
 # Make only a Full Backups and No Differential (yes/no)
 FULLBACKUPONLY="no"
 # Day for the FullBackup (Sun,Mon,Tue,Wed,Thu,Fri,Sat)
@@ -122,6 +122,7 @@ echo ""                                                                 		>> $LO
 echo "#############################################	"                    		>> $LOGFILE
 echo "#  Local Backup					"                      		>> $LOGFILE
 echo "#  ended: $(date +"%k:%M %d.%m.%Y") 		"                      		>> $LOGFILE
+echo "#  runtime: $RUNTIME				"				>> $LOGFILE
 echo "#############################################	"                    		>> $LOGFILE
 }
 
@@ -130,7 +131,6 @@ function RUNNINGTIME {
 ende=$(date +%s)
 
 diff=$[ende-anfang]
-echo -e "\n"
 RUNTIME="Runtime: $[$diff / 60]min $[$diff % 60]s"
 }
 
@@ -157,8 +157,8 @@ elif [ -f $BACKUPPATH/timestamp.txt ]; then
 	DIFFBACKUP
 fi
 CLEANUP
-ENDBLABLA
 RUNNINGTIME
+ENDBLABLA
 if [ $STATUSMAIL = yes ]; then
     MAIL
 fi
