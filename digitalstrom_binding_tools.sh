@@ -5,7 +5,6 @@
 #              binding more stable
 #by A. Laub
 #andreas[-at-]laub-home.de
-#original Script from Erik Ljungstrom 27/05/2011
 #
 #License:
 #This program is free software: you can redistribute it and/or modify it
