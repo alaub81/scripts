@@ -63,6 +63,10 @@ for i in $VOLUME; do
 done
 echo -e "\n$TIMESTAMP Backup for Volumes completed\n" 
 
-find $BACKUPDIR -name "*.tar.gz" -daystart -mtime +$DAYS -delete
-
+# dont delete last old backups!
+OLD_BACKUPS=$(ls -1 $BACKUPDIR/*.gz |wc -l)
+if [ $OLD_BACKUPS -gt 3 ]
+then
+        find $BACKUPDIR -name "*.tar.gz" -daystart -mtime +$DAYS -delete
+fi
 
