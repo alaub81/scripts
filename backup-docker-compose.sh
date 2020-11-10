@@ -58,12 +58,10 @@ for i in $COMPOSE; do
 	echo -e " Backup von Compose Project:\n  * $PROJECTNAME";
 	cd $i
 	tar -czf $BACKUPDIR/$PROJECTNAME-$TIMESTAMP.tar.gz .
+	# dont delete last old backups!
+	OLD_BACKUPS=$(ls -1 $BACKUPDIR/$PROJECTNAME*.tar.gz |wc -l)
+	if [ $OLD_BACKUPS -gt $DAYS ]; then
+		find $BACKUPDIR -name "$PROJECTNAME*.tar.gz" -daystart -mtime +$DAYS -delete
+	fi
 done
 echo -e "\n$TIMESTAMP Backup for Compose Projects completed\n"
-
-# dont delete last old backups!
-OLD_BACKUPS=$(ls -1 $BACKUPDIR/*.gz |wc -l)
-if [ $OLD_BACKUPS -gt 3 ]
-then
-        find $BACKUPDIR -name "*.tar.gz" -daystart -mtime +$DAYS -delete
-fi

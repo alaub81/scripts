@@ -60,13 +60,10 @@ for i in $VOLUME; do
 	--name volumebackup \
         alpine sh -c "cd /data && /bin/tar -czf /backup/$i-$TIMESTAMP.tar.gz ."
         #debian:stretch-slim bash -c "cd /data && /bin/tar -czf /backup/$i-$TIMESTAMP.tar.gz ."
+	# dont delete last old backups!
+        OLD_BACKUPS=$(ls -1 $BACKUPDIR/$i*.tar.gz |wc -l)
+	if [ $OLD_BACKUPS -gt $DAYS ]; then
+		find $BACKUPDIR -name "$i*.tar.gz" -daystart -mtime +$DAYS -delete
+	fi
 done
-echo -e "\n$TIMESTAMP Backup for Volumes completed\n" 
-
-# dont delete last old backups!
-OLD_BACKUPS=$(ls -1 $BACKUPDIR/*.gz |wc -l)
-if [ $OLD_BACKUPS -gt 3 ]
-then
-        find $BACKUPDIR -name "*.tar.gz" -daystart -mtime +$DAYS -delete
-fi
-
+echo -e "\n$TIMESTAMP Backup for Volumes completed\n"

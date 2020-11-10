@@ -56,12 +56,10 @@ for i in $CONTAINER; do
 	docker exec -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$MYSQL_PWD \
 		$i /usr/bin/mysqldump -u root $MYSQL_DATABASE \
 		| gzip > $BACKUPDIR/$i-$MYSQL_DATABASE-$TIMESTAMP.sql.gz
+	# dont delete last old backups!
+	OLD_BACKUPS=$(ls -1 $BACKUPDIR/$i*.gz |wc -l)
+	if [ $OLD_BACKUPS -gt $DAYS ]; then
+		find $BACKUPDIR -name "$i*.gz" -daystart -mtime +$DAYS -delete
+	fi
 done
 echo -e "\n$TIMESTAMP Backup for Databases completed\n" 
-
-# dont delete last old backups!
-OLD_BACKUPS=$(ls -1 $BACKUPDIR/*.gz |wc -l)
-if [ $OLD_BACKUPS -gt 3 ]
-then
-	find $BACKUPDIR -name "*.gz" -daystart -mtime +$DAYS -delete
-fi
