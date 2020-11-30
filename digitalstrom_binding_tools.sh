@@ -52,10 +52,12 @@ function getstatus {
 	STATUSBRIDGE=$(echo $FULLSTATUSBRIDGE | cut -d":" -f2 | cut -d"," -f1 | cut -d'"' -f2)
 	STATUSROLLO=$(echo $FULLSTATUSROLLO | cut -d":" -f2 | cut -d"," -f1 | cut -d'"' -f2)
 	STATUSWATT=$(echo $FULLSTATUSWATT | cut -d":" -f2 | cut -d"," -f1 | cut -d'"' -f2)
+        STATUSBRIDGEDETAIL=$(echo $FULLSTATUSWATT | cut -d":" -f3 | cut -d"," -f1 | cut -d'"' -f2)
 }
 
 function status {
 	echo "Bridge Status: $STATUSBRIDGE"
+	echo "Bridge Status Detail: $STATUSBRIDGEDETAIL"
 	echo "Rolladen Status: $STATUSROLLO"
 	echo "Verbrauch Status: $STATUSWATT"
 }
@@ -74,11 +76,12 @@ function refresh {
 function restart {
 	echo "Restarting $BRIDGE"
         curl -s -k -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d "false" "$OPENHAB/rest/things/$BRIDGE/enable" > /dev/null
+	sleep 3
         curl -s -k -X PUT --header "Content-Type: application/json" --header "Accept: application/json" -d "true" "$OPENHAB/rest/things/$BRIDGE/enable" > /dev/null
 }
 
 function autorestart {
-	if [ "$STATUSBRIDGE" != "ONLINE" ] || [ "$STATUSROLLO" != "ONLINE" ] || [ "$STATUSWATT" != "ONLINE" ]; then
+	if [ "$STATUSBRIDGE" != "ONLINE" ] || [ "$STATUSROLLO" != "ONLINE" ] || [ "$STATUSWATT" != "ONLINE" ] || [ "$STATUSBRIDGEDETAIL" != "NONE" ]; then
 		echo "status is not Online!"
 		echo "-------------------------------------"
 		fullstatus
@@ -97,7 +100,7 @@ function autorestart {
 		echo "-------------------------------------"
 		tail -n $NUMBER $LOGFILE
 		getstatus
-		if [ "$STATUSBRIDGE" != "ONLINE" ] || [ "$STATUSROLLO" != "ONLINE" ] || [ "$STATUSWATT" != "ONLINE" ]; then
+		if [ "$STATUSBRIDGE" != "ONLINE" ] || [ "$STATUSROLLO" != "ONLINE" ] || [ "$STATUSWATT" != "ONLINE" ] || [ "$STATUSBRIDGEDETAIL" != "NONE" ]; then
 			echo -e "\nRestart didn't work Bridge Status!"
 			echo "-------------------------------------"
 			fullstatus
