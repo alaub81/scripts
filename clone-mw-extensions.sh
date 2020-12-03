@@ -22,27 +22,26 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # set the variables
 
 
-MW_BRANCH=$(docker exec laubhome_mediawiki_1 env | grep MEDIAWIKI_BRANCH |cut -d"=" -f2)
+#MW_BRANCH=$(docker exec laubhome_135_mediawiki_1 env | grep MEDIAWIKI_MAJOR_VERSION |cut -d"=" -f2)
+MW_BRANCH=REL1_35
 rm -f extensions
 mkdir extensions_$MW_BRANCH
 cp -rp extensions_archive/* extensions_$MW_BRANCH/
 cd extensions_$MW_BRANCH
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/CookieWarning"
+#git clone "https://gerrit.wikimedia.org/r/mediawiki/extensions/CookieWarning"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/GoogleAdSense"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/googleAnalytics"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/Lockdown"
-git clone "https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory"
-#git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory"
+#git clone "https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory"
+git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/SelectCategory"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/WikiCategoryTagCloud"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/Description2"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/RelatedArticles"
 git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend"
-git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/ContributionCredits"
+git clone "https://github.com/JeroenDeDauw/GitHub"
+#git clone -b $MW_BRANCH "https://gerrit.wikimedia.org/r/mediawiki/extensions/ContributionCredits"
 
-git clone -b $MW_BRANCH https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor.git
-cd VisualEditor
-git submodule update --init
-cd ..
 cd ..
 ln -s extensions_$MW_BRANCH extensions
 

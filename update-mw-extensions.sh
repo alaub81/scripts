@@ -26,12 +26,11 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RESTART=false
 
 # where to find compose Project
-COMPOSEPROJECT=/opt/laubhome
+#COMPOSEPROJECT=/opt/laubhome_135
+COMPOSEPROJECT=$(pwd)
 
 # where to find the extensions outgoing of the script Path
 EXTENSIONSDIR=$COMPOSEPROJECT/data/extensions
-
-MWBRANCH= $(docker exec laubhome_mediawiki_1 env | grep MEDIAWIKI_BRANCH |cut -d"=" -f2)
 
 ### Do the stuff
 for i in $(ls $EXTENSIONSDIR); do
