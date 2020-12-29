@@ -4,7 +4,7 @@ import board
 import adafruit_dht
 
 # Initial the dht device, with data pin connected to:
-dhtDevice = adafruit_dht.DHT22(board.D4)
+dhtDevice = adafruit_dht.DHT22(board.D17)
 
 def main():
         # Print the values to the serial port
