@@ -32,6 +32,9 @@ COMPOSEPROJECT=$(pwd)
 # where to find the extensions outgoing of the script Path
 EXTENSIONSDIR=$COMPOSEPROJECT/data/extensions
 
+# where to find the skins outgoing of the script Path
+SKINSDIR=$COMPOSEPROJECT/data/skins
+
 ### Do the stuff
 for i in $(ls $EXTENSIONSDIR); do
 	if [ -d $EXTENSIONSDIR/$i/.git ]; then
@@ -39,6 +42,13 @@ for i in $(ls $EXTENSIONSDIR); do
 #                cd $EXTENSIONSDIR/$i && git pull
 		git -C $EXTENSIONSDIR/$i pull
 	fi
+done
+for i in $(ls $SKINSDIR); do
+        if [ -d $SKINSDIR/$i/.git ]; then
+                echo -e "\n$i ist ein GIT Repository:"
+#                cd $SKINSDIR/$i && git pull
+                git -C $SKINSDIR/$i pull
+        fi
 done
 
 # At the End restart of the compose project
