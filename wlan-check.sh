@@ -28,7 +28,10 @@ NETWORKINTERFACE="wlan0"
 ping -w 30 -c 1 $GATEWAY > /dev/null 2>&1
 if [ $? -ne 0 ]; then
         echo "Restart $NETWORKINTERFACE"
-        ifdown $NETWORKINTERFACE
-        ifup $NETWORKINTERFACE
+        ip link set $NETWORKINTERFACE down
+        ip link set $NETWORKINTERFACE up
+        # deprecated
+        #ifdown $NETWORKINTERFACE
+        #ifup $NETWORKINTERFACE
 fi
 
