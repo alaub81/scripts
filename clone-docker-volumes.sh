@@ -50,7 +50,7 @@ fi
 # copy the stuff
 echo "Copying data from source volume \"$1\" to destination volume \"$2\"..."
 docker run --rm \
-	   --name clonevolume
+	   --name clonevolume \
            -i \
            -t \
            -v $1:/from:ro \
