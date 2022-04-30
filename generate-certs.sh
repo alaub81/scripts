@@ -22,7 +22,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Just change to your belongings
 COMPOSE_PROJECT_DIR="/opt/mosquitto"
-IP="laub-raspi4.laub.loc"
+IP="FQDN / IP ADRESS"
 SUBJECT_CA="/C=SE/ST=Mannheim/L=Mannheim/O=himinds/OU=CA/CN=$IP"
 SUBJECT_SERVER="/C=SE/ST=Mannheim/L=Mannheim/O=himinds/OU=Server/CN=$IP"
 SUBJECT_CLIENT="/C=SE/ST=Mannheim/L=Mannheim/O=himinds/OU=Client/CN=$IP"
