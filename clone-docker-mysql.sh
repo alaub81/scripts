@@ -45,11 +45,16 @@ MYSQL_DATABASE=$(docker exec $1 env | grep MYSQL_DATABASE |cut -d"=" -f2)
 SOURCE_MYSQL_PWD=$(docker exec $1 env | grep MYSQL_ROOT_PASSWORD |cut -d"=" -f2)
 DEST_MYSQL_PWD=$(docker exec $2 env | grep MYSQL_ROOT_PASSWORD |cut -d"=" -f2)
 echo -e " * Copying $MYSQL_DATABASE DB from $1 to $2 ...";
-docker exec -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$SOURCE_MYSQL_PWD \
-	$1 /usr/bin/mysqldump -u root $MYSQL_DATABASE |\
-docker exec -i -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$DEST_MYSQL_PWD \
-	$2 /usr/bin/mysql -u root $MYSQL_DATABASE
-echo "DONE!"
-
-
-
+if docker exec -it $1 test -e /usr/bin/mysqldump; then
+        docker exec -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$SOURCE_MYSQL_PWD \
+                $1 /usr/bin/mysqldump -u root $MYSQL_DATABASE |\
+        docker exec -i -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$DEST_MYSQL_PWD \
+                $2 /usr/bin/mysql -u root $MYSQL_DATABASE
+elif docker exec -it $1 test -e /usr/bin/mariadb-dump; then
+        docker exec -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$SOURCE_MYSQL_PWD \
+                $1 /usr/bin/mariadb-dump -u root $MYSQL_DATABASE |\
+        docker exec -i -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$DEST_MYSQL_PWD \
+                $2 /usr/bin/mariadb -u root $MYSQL_DATABASE
+else
+        echo " ERROR: cannot find dump command for container $1!"
+fi
