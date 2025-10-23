@@ -41,9 +41,9 @@ then
 fi
 
 # copy the database
-MYSQL_DATABASE=$(docker exec $1 env | grep MYSQL_DATABASE |cut -d"=" -f2)
-SOURCE_MYSQL_PWD=$(docker exec $1 env | grep MYSQL_ROOT_PASSWORD |cut -d"=" -f2)
-DEST_MYSQL_PWD=$(docker exec $2 env | grep MYSQL_ROOT_PASSWORD |cut -d"=" -f2)
+MYSQL_DATABASE=$(docker exec $1 env | grep -E '^(MYSQL|MARIADB)_DATABASE=' |cut -d"=" -f2)
+SOURCE_MYSQL_PWD=$(docker exec $1 env | grep -E '^(MYSQL|MARIADB)_ROOT_PASSWORD=' |cut -d"=" -f2)
+DEST_MYSQL_PWD=$(docker exec $2 env | grep -E '^(MYSQL|MARIADB)_ROOT_PASSWORD=' |cut -d"=" -f2)
 echo -e " * Copying $MYSQL_DATABASE DB from $1 to $2 ...";
 if docker exec -it $1 test -e /usr/bin/mysqldump; then
         docker exec -e MYSQL_DATABASE=$MYSQL_DATABASE -e MYSQL_PWD=$SOURCE_MYSQL_PWD \
